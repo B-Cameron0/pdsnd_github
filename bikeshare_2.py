@@ -6,6 +6,18 @@ CITY_DATA = { 'chicago': 'chicago.csv',
               'new york city': 'new_york_city.csv',
               'washington': 'washington.csv' }
 
+# Global mappings to replace manual index tracking
+MONTH_MAP = {'january': 1, 'february': 2, 'march': 3, 'april': 4, 'may': 5, 'june': 6}
+VALID_DAYS = {'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'}
+
+def get_user_choice(prompt, valid_options):
+    """Generic helper to handle validated user input without duplicating while-loops."""
+    while True:
+        user_input = input(prompt).strip().lower()
+        if user_input in valid_options: 
+            return user_input
+        print(f"Invalid input. Please choose from: {', '.join(valid_options)}")
+
 def get_filters():
     """
     Asks user to specify a city, month, and day to analyze.
@@ -18,32 +30,22 @@ def get_filters():
     print('Hello! Let\'s explore some US bikeshare data!')
 
     # get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
-    while True:
-        city = input("Please enter your desired city (options currently include chicago, new york city, and washington): ")
-        # Check if input is included in city data 
-        if city in CITY_DATA:
-            break
-        # If not then repeat the input prompt until satisfactory input is made
-        else:
-            print("Invalid input. Please enter one of the three city options.")
+    city = get_user_choice(
+         "Please enter your desired city (options currently include chicago, new york city, and washington): ",
+         CITY_DATA.keys()  
+    )
 
     # get user input for month (all, january, february, ... , june)
-    while True:
-        month = input("Please enter month (all, january, february, ... , june): ").lower()
-        valid_months = ['all', 'january', 'february', 'march', 'april', 'may', 'june']
-        if month in valid_months:
-            break
-        else:
-            print("Invalid input. Please enter a valid month (january through june) or 'all'.")
+    month = get_user_choice(
+         "Please enter month (all, january, february, ... , june): ",
+         ['all'] + list(MONTH_MAP.keys())
+    )
 
     # get user input for day of week (all, monday, tuesday, ... sunday)
-    while True:
-        day = input("Please enter your desired day of the week to filter by, you can also use all: ")
-        valid_days = ['all', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-        if day in valid_days:
-            break
-        else:
-            print("Invalid input. Please enter a valid day or 'all'.")
+    day = get_user_choice(
+        "Please enter your desired day of the week, or 'all': ",
+        ['all'] + list(VALID_DAYS)
+    )
 
     print('-'*40)
     return city, month, day
@@ -65,27 +67,20 @@ def load_data(city, month, day):
     df = pd.read_csv(CITY_DATA[city])
     
     # Convert the start time column to datetime 
-    df['Start Time'] = pd.to_datetime(df['Start Time'])
+    start_time = pd.to_datetime(df['Start Time'])
     
     # Extract month and day of week from start time to create new columns
-    df['month'] = df['Start Time'].dt.month
-    df['day_of_week'] = df['Start Time'].dt.day.name()
+    df['month'] = start_time.dt.month
+    df['day_of_week'] = start_time.dt.day_name().str.lower() # Standardize to lowercase matching our filters
     
     # Filter by month if applicable
     if month != 'all':
-        
-        # use the index of the months list to get the corresponding int
-        months = ['january', 'february', 'march', 'april', 'may', 'june']
-        month = months.index(month) + 1
-        
-        # filter by month to create the new dataframe 
-        df = df[df['month'] == month]
+        df = df[df['month'] == MONTH_MAP[month]]
      
      # Filter by day of week if applicable
     if day != 'all':
-                
         # filter by day of week to create the new dataframe 
-        df = df[df['day_of_week'] == day.title()]
+        df = df[df['day_of_week'] == day]
 
     return df
 

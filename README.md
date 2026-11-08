@@ -6,6 +6,7 @@ Git/Version Control Test Project
 
 ### Description
 The following project utilizes a template from Udacity to work with Git and version control
+The Python function found in the bikeshare_2.py file utilizes pandas and numpy
 
 ### Files used
 Files used are the bikeshare_2.py file which features a Python function to help lead the user and identify bikesharing data from three different cities including Chicago, New York, and Washington 

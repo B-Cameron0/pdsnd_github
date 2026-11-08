@@ -1,3 +1,5 @@
+# the following function utilizes pandas and numpy to help guide users in identifyin bike share statistics for three cities, Chicao, New York, and Washington:
+
 import time
 import pandas as pd
 import numpy as np

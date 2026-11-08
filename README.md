@@ -1,17 +1,12 @@
->**Note**: Please **fork** the current Udacity repository so that you will have a **remote** repository in **your** Github account. Clone the remote repository to your local machine. Later, as a part of the project "Post your Work on Github", you will push your proposed changes to the remote repository in your Github account.
-
 ### Date created
-Include the date you created this project and README file.
+Created November 7, 2026
 
 ### Project Title
-Replace the Project Title
+Git/Version Control Test Project 
 
 ### Description
-Describe what your project is about and what it does
+The following project utilizes a template from Udacity to work with Git and version control
 
 ### Files used
-Include the files used
-
-### Credits
-It's important to give proper credit. Add links to any repo that inspired you or blogposts you consulted.
+Files used are the bikeshare_2.py file which features a Python function to help lead the user and identify bikesharing data from three different cities including Chicago, New York, and Washington 
 
